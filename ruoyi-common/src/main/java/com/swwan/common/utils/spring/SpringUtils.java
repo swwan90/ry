@@ -1,9 +1,8 @@
 package com.swwan.common.utils.spring;
 
-import org.apache.commons.lang3.StringUtils;
+import com.swwan.common.utils.StringUtils;
 import org.springframework.aop.framework.AopContext;
 import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.beans.factory.config.BeanFactoryPostProcessor;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
@@ -11,13 +10,7 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 
-/**
- * @ClassName SpringUtils
- * @Description TODO
- * @Author swwan
- * @Date 2020/12/1 15:40
- * @Version 1.0
- **/
+
 @Component
 public final class SpringUtils implements BeanFactoryPostProcessor, ApplicationContextAware {
 

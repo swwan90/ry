@@ -3,13 +3,6 @@ package com.swwan.common.utils;
 import java.util.Collection;
 import java.util.Map;
 
-/**
- * @ClassName StringUtils
- * @Description TODO
- * @Author swwan
- * @Date 2020/12/1 16:33
- * @Version 1.0
- **/
 public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     private static final String NULLSTR = "";
@@ -48,7 +41,7 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
     }
 
     public static boolean isNotEmpty(String string) {
-        return !isNotEmpty(string);
+        return !isEmpty(string);
     }
 
     public static boolean isNull(Object object) {
@@ -86,13 +79,6 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
 
     /**
      * 截取字符串
-     *
-     * @author swwan
-     * @date 2020/12/1
-     * @param str
-     * @param start
-     * @param end
-     * @return java.lang.String
      */
     public static String substring(final String str, int start, int end) {
         if (str == null || start > end) {
@@ -135,5 +121,128 @@ public class StringUtils extends org.apache.commons.lang3.StringUtils {
             return template;
         }
         return StrFormatter.format(template, params);
+    }
+
+    /**
+     * 下划线转驼峰命名
+     */
+    public static String toUnderScoreCase(String str) {
+        if (str == null) {
+            return null;
+        }
+        StringBuilder sb = new StringBuilder();
+        // 前置字符是否大写
+        boolean preCharIsUpperCase;
+        preCharIsUpperCase = true;
+        // 当前字符是否大写
+        boolean currentCharIsUpperCase;
+        currentCharIsUpperCase = true;
+        // 下一字符是否大写
+        boolean nextCharIsUpperCase;
+        nextCharIsUpperCase = true;
+
+        for (int i = 0; i < str.length(); i++) {
+            char c = str.charAt(i);
+            if (i > 0) {
+                preCharIsUpperCase = Character.isUpperCase(str.charAt(i - 1));
+            } else {
+                preCharIsUpperCase = false;
+            }
+
+            currentCharIsUpperCase = Character.isUpperCase(c);
+
+            if (i < str.length() - 1) {
+                nextCharIsUpperCase = Character.isUpperCase(str.charAt(i + 1));
+            }
+
+            if (preCharIsUpperCase && currentCharIsUpperCase && !nextCharIsUpperCase) {
+                sb.append(SEPARATOR);
+            } else if ((i != 0 && !preCharIsUpperCase) && currentCharIsUpperCase) {
+                sb.append(SEPARATOR);
+            }
+            sb.append(Character.toLowerCase(c));
+        }
+        return sb.toString();
+    }
+
+    public static boolean inStringIgnoreCase(String str, String... strs) {
+        if (str != null && strs != null) {
+            for (String s : strs) {
+                if (str.equalsIgnoreCase(trim(s))) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    public static String convertToCamelCase(String name)
+    {
+        StringBuilder result = new StringBuilder();
+        // 快速检查
+        if (name == null || name.isEmpty())
+        {
+            // 没必要转换
+            return "";
+        }
+        else if (!name.contains("_"))
+        {
+            // 不含下划线，仅将首字母大写
+            return name.substring(0, 1).toUpperCase() + name.substring(1);
+        }
+        // 用下划线将原始字符串分割
+        String[] camels = name.split("_");
+        for (String camel : camels)
+        {
+            // 跳过原始字符串中开头、结尾的下换线或双重下划线
+            if (camel.isEmpty())
+            {
+                continue;
+            }
+            // 首字母大写
+            result.append(camel.substring(0, 1).toUpperCase());
+            result.append(camel.substring(1).toLowerCase());
+        }
+        return result.toString();
+    }
+
+    public static String toCamelCase(String s)
+    {
+        if (s == null)
+        {
+            return null;
+        }
+        if (s.indexOf(SEPARATOR) == -1)
+        {
+            return s;
+        }
+        s = s.toLowerCase();
+        StringBuilder sb = new StringBuilder(s.length());
+        boolean upperCase = false;
+        for (int i = 0; i < s.length(); i++)
+        {
+            char c = s.charAt(i);
+
+            if (c == SEPARATOR)
+            {
+                upperCase = true;
+            }
+            else if (upperCase)
+            {
+                sb.append(Character.toUpperCase(c));
+                upperCase = false;
+            }
+            else
+            {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    @SuppressWarnings("unchecked")
+    public static <T> T cast(Object obj)
+    {
+        return (T) obj;
     }
 }
